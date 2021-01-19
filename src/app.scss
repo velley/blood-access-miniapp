@@ -1,0 +1,69 @@
+
+
+$color-brand: #1890ff;
+$color-brand-light: #40a9ff;
+$color-brand-dark:#0050b3;
+
+/* Color */
+$color-success: #13CE66;
+$color-error: #FF4949;
+$color-warning: #FFC82C;
+$color-info: #1890ff;
+
+@import "~taro-ui/dist/style/index.scss";
+
+.page, page{
+  height: 100%;
+  overflow: hidden;
+}
+
+.col-page{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-1{
+  flex: 1;
+}
+
+.scroll-y{
+  overflow-y: scroll;
+}
+
+.grey-bg{
+  background: #f8f8f8;
+}
+
+.white-box{
+  padding: 20px;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.shadow{
+  box-shadow: 0 0 20px #efefef;
+}
+
+.text{
+  font-size: 24px;
+  line-height: 38px;
+}
+
+.m-text{
+  font-size: 30px;
+  line-height: 54px;
+}
+
+.full-photo{
+  width: 100%;
+}
+
+.indent{
+  text-indent: 60px;
+}
+
+.dash-line{
+  border-bottom: 1px dashed #eee;
+  margin: 20px 0;
+}
