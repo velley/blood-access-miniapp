@@ -34,10 +34,10 @@ const pagingOption = {
 export function usePagingData<T>(
   url: string,
   querys: any,
-  options?: RequestOption 
+  options: RequestOption = {}
 ): [ T[], PagingAction, PagingStatus ] {
 
-  const [ pagingData, getPagingData, httpState ]  = useRequest<PagingData<T>>(url, querys, {auto: false});  
+  const [ pagingData, getPagingData, httpState ]  = useRequest<PagingData<T>>(url, querys, {auto: false, ...options});  
   const [ pagingState, setPagingState ]           = useState<PagingState>('unfulled');
   const [ refreshing, setRefreshState ]           = useState<boolean>(true);
   const [ pageNo, setPageNo ]                     = useState(1);
@@ -68,7 +68,7 @@ export function usePagingData<T>(
   // 监听pageNo变量变化并发送数据请求
   useEffect(() => {
     if(!refreshing && pageNo === 1) return;
-    getPagingData({page_index: pageNo});
+    getPagingData({startPage: pageNo});
   }, [pageNo, refreshing])
 
   const refresh = () => {   

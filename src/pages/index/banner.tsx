@@ -6,7 +6,7 @@ import { useRequest } from "../../hooks/useRequest";
 
 export function Banner() {
  
-  const [ bannerList ] = useRequest<BannerData[]>('/miniapp/queryBanner', {});  
+  const [ bannerList ] = useRequest<BannerData[]>('/miniapp/queryBanner', {}, {method: 'GET'});  
 
   return (
     <Swiper

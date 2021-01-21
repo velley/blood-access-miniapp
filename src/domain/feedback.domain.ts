@@ -12,3 +12,11 @@ export interface FeedBackData {
   hasReply?: 0 | 1;
 	reply?: string;
 }
+
+export interface OrganData {
+  organizationId: number;	
+	code: string;
+	name: string;
+	describe: string;
+	description: string;
+}

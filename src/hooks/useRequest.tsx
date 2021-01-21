@@ -26,7 +26,8 @@ export function useRequest<T>(
     from(
       Taro.request({
         url: SERVER_ROOT_PATH + url,
-        data: {...param, ...query }
+        data: {...param, ...query },
+        method: setting.method
       })
     ).pipe(
       tap(_ => setState('success'), _ => setState('failed') ),

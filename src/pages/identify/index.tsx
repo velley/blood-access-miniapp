@@ -15,17 +15,18 @@ interface IdentifyData{
 
 export default function Identify() {
 
-  const [formData, submit, action, httpState] = useFormer<IdentifyData>('/miniapp/user/addPatientByPhone', { })
+  const [formData, submit, action, formState] = useFormer<IdentifyData>('/miniapp/user/addPatientByPhone', { })
 
   useEffect( () => {
-    if(httpState === 'success') Taro.navigateBack();
-  }, [httpState])
+    console.log('39200', formState)
+    if(formState.httpState === 'success') Taro.navigateBack();
+  }, [formState])
   
   return(
     <View className="identify-container page grey-bg">
       <AtForm 
         className="form-container white-box"
-        // onSubmit={_ => submit()}
+        onSubmit={_ => console.log('3e')}
       >
         <AtInput
           name='value6'
@@ -47,7 +48,7 @@ export default function Identify() {
         >
           <VerifyCode disabled={!/^1\d{10}$/.test(formData.phone)}></VerifyCode>
         </AtInput>
-        <AtButton formType='submit' type="primary" onClick={_ => submit()}>确认</AtButton>
+        <AtButton type="primary" onClick={_ => submit()}>确认</AtButton>
       </AtForm>      
     </View>
   )

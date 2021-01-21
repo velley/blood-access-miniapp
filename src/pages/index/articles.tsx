@@ -7,7 +7,7 @@ import Taro, { usePageScroll } from '@tarojs/taro';
 
 export function Articles() {
 
-  const [ articleList, action, status ] = usePagingData<ArticleData>('/miniapp/queryArticleListByPage', {});
+  const [ articleList, action, status ] = usePagingData<ArticleData>('/miniapp/queryArticleListByPage', {}, {method: 'POST'});
   const [ navIndex, setIndex ] = useState(0);
   const scroll = usePageScroll( (x) => {
     console.log('scroll', x)
