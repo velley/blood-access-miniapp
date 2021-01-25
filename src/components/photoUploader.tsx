@@ -11,7 +11,7 @@ export function PhotoUploader(props: { urlHandler: (url: string | string[]) => v
     if(!files?.length) return;
     console.log(files);
     Taro.uploadFile({
-      url: '/upload/addImage',
+      url: 'https://wx.xuetouyun.com/upload/addImage',
       name: 'feed',
       filePath: files[0].url
     })

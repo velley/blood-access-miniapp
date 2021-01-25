@@ -9,7 +9,8 @@ export default {
     'pages/identify/index',
     'pages/feedback/list/index',
     'pages/feedback/form/index',
-    'pages/feedback/detail/index'
+    'pages/feedback/detail/index',
+    'pages/access/list/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -23,7 +23,8 @@ interface PagingStatus {
 }
 
 interface PagingOption extends RequestOption {
-  start: 0 | 1;    
+  start?: 0 | 1;    
+  manual?: boolean;
 }
 
 const pagingOption = {
@@ -34,18 +35,18 @@ const pagingOption = {
 export function usePagingData<T>(
   url: string,
   querys: any,
-  options: RequestOption = {}
+  options: PagingOption = {}
 ): [ T[], PagingAction, PagingStatus ] {
 
   const [ pagingData, getPagingData, httpState ]  = useRequest<PagingData<T>>(url, querys, {auto: false, ...options});  
   const [ pagingState, setPagingState ]           = useState<PagingState>('unfulled');
   const [ refreshing, setRefreshState ]           = useState<boolean>(true);
-  const [ pageNo, setPageNo ]                     = useState(1);
+  const [ pageNo, setPageNo ]                     = useState(0);
   const [ listCache, setCache ]                   = useState<T[]>([]);
 
   
   useEffect( () => {  
-
+    
     // 根据刷新状态判断是否累计cache还是重置cache，操作后将刷新状态状态设为false
     if(refreshing) setCache([]);
     setRefreshState(false);
@@ -54,10 +55,10 @@ export function usePagingData<T>(
      pagingData && setCache(cache => cache.concat(pagingData.list));
 
     // 判断数据状态，是否为空或已加载完毕
-    if(!pagingData?.list.length) {      
+    if(pagingData?.list.length) {      
       setPagingState('unfulled')      
     } else {
-      if(pagingData.sartPage === 1) {
+      if(pageNo === 0) {
         setPagingState('empty')
       } else {
         setPagingState('fulled')
@@ -65,18 +66,20 @@ export function usePagingData<T>(
     }
   }, [pagingData])
 
+
   // 监听pageNo变量变化并发送数据请求
   useEffect(() => {
-    if(!refreshing && pageNo === 1) return;
-    getPagingData({startPage: pageNo});
+    if(!refreshing && pageNo === 0) return;
+    getPagingData({startPage: pageNo, pageSize: 10});
   }, [pageNo, refreshing])
 
   const refresh = () => {   
-    setRefreshState(true);
-    setPageNo(1);    
+    setRefreshState(true);    
+    setPageNo(0);    
   }
 
-  const nextPage = () => {    
+  const nextPage = () => {        
+    if(pagingState === 'fulled') return;
     setPageNo(pageNo +1)
   }
 

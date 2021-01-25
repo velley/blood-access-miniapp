@@ -1,15 +1,21 @@
 import { View, Text } from "@tarojs/components"
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AtButton } from "taro-ui";
 import Taro from '@tarojs/taro';
 import { usePagingData } from "../../../hooks/usePagingData";
 import { FeedBackData } from "../../../domain/feedback.domain";
 
 import './index.scss'
+import { useAuthInfo } from "../../../hooks/useLogin";
 
 export default function FeedBackList() {
 
-  const [list] = usePagingData<FeedBackData>('/miniapp/getUserFeedback', {});  
+  const [, patient]     = useAuthInfo();
+  const [list, action]  = usePagingData<FeedBackData>('/miniapp/getUserFeedback', {patientId: patient?.patientId}, {manual: true});  
+
+  useEffect( () => {
+    if(patient) action.refresh()
+  }, [patient])
 
   return (
     <View className="feedback-container page col-page grey-bg">

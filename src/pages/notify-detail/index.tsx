@@ -9,12 +9,12 @@ import './index.scss';
 export default function NotifyDetail() {
 
   const router    = useRouter();
-  const [detail]  = useRequest<NotifyData>('/miniapp/readNotifyMsg', {notifyId: router.params.id} )
+  const [detail]  = useRequest<NotifyData>('/miniapp/readNotifyMsg', {notifyId: parseInt(router.params.id) } )
 
   return detail && (
     <View className="detail-container page grey-bg white-box">     
 
-      <View className="m-text indent">{detail.content}</View>
+      <View className="m-text indent">{detail.notifyContent}</View>
 
       <View className="text time">{detail.sendTime}</View>
       

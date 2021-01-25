@@ -1,4 +1,4 @@
-import { View, RichText } from "@tarojs/components";
+import { View, RichText, Image } from "@tarojs/components";
 import { useRouter } from "@tarojs/taro";
 import React, { useEffect } from 'react';
 import { ArticleData } from "../../domain/information.domain";
@@ -9,10 +9,12 @@ import './index.scss'
 export default function Article() {
 
   const router = useRouter();
-  const [ details ] = useRequest<ArticleData>('/miniapp/getArticleDetail', { articleId: router.params.articleId });  
+  const articleId = parseInt(router.params.articleId)
+  const [ details ] = useRequest<ArticleData>('/miniapp/getArticleDetail', { articleId }, {method: 'GET'});  
 
   return details && (
     <View className="article-container at-article scroll-y page white-box">
+      { details.imageUrl && <Image src={details.imageUrl} mode="aspectFit" style="width:100%"></Image>}
       <View className='at-article__h1'>
         {details.title}
       </View>

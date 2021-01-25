@@ -15,13 +15,13 @@ export default function Notify() {
     <View className="notify-container page grey-bg scroll-y">
       {
         notifyList?.map( item => (
-          <View className="notify-box-item" onClick={ _ => Taro.navigateTo({url: `/pages/notify-detail/index?id=${item.notifyId}`})}>
-            <View className="time">{item?.sendTime}</View>
+          <View className="notify-box-item" onClick={ _ => Taro.navigateTo({url: `/pages/notify-detail/index?id=${item.taskRecordId}`})}>
+            <View className="time">{item?.notifyTime}</View>
             <View className="conent-card white-box shadow">
               <AtTag className={`tag text ${item?.type === 1 ? 'doctor' : ''}`}  active size="small">{item?.type === 1 ? '系统消息' : '医生回复'}</AtTag>
               { item.readStatus ? "" :  <View className="unread-point"></View> }                     
               <View className="notify-content text">
-                {item?.content}
+                {item?.notifyContent}
               </View>
             </View>
           </View>

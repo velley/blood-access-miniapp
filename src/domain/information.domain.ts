@@ -15,4 +15,5 @@ export interface ArticleData {
   content: string;
   articleGroupId: string;
   cdt: string;
+  imageUrl: string;
 }

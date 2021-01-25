@@ -20,12 +20,12 @@ interface FormState {
 export function useFormer<T extends FormScope>(
   url: string,
   data: T
-): [T, () => void, FormAction<T>, FormState] {
+): [T, (data?: any) => void, FormAction<T>, FormState] {
   const [formData, setFormData] = useState<T>(data);
   const [, request, httpState] = useRequest(url, {}, {auto: false, successTip: '提交成功'});
 
-  const submit = () => {
-    request(formData)
+  const submit = (dat: any = {}) => {
+    request({...formData, ...data})
   }
 
   const patchValue = (key: keyof T, value: any) => {

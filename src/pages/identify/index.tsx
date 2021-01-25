@@ -1,8 +1,9 @@
 import { View } from "@tarojs/components";
 import Taro from '@tarojs/taro';
-import React, { ReactText, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AtButton, AtForm, AtInput } from "taro-ui";
 import { useFormer } from "../../hooks/useFormer";
+import { useAuthInfo } from "../../hooks/useLogin";
 // import React from "react";
 
 import './index.scss';
@@ -10,15 +11,21 @@ import { VerifyCode } from "./verify-code";
 
 interface IdentifyData{
   phone?: string;
-  verifyCode?: string
+  verifyCode?: string;
+  openid?: string;
 }
 
 export default function Identify() {
 
-  const [formData, submit, action, formState] = useFormer<IdentifyData>('/miniapp/user/addPatientByPhone', { })
+  const [ openid ] = useAuthInfo();
+  const [ formData, submit, action, formState ] = useFormer<IdentifyData>('/miniapp/bindPatient', { openid });
 
   useEffect( () => {
-    console.log('39200', formState)
+    console.log('openid', openid)
+  }, [openid])
+
+  useEffect( () => {
+    console.log("success")
     if(formState.httpState === 'success') Taro.navigateBack();
   }, [formState])
   
@@ -26,8 +33,8 @@ export default function Identify() {
     <View className="identify-container page grey-bg">
       <AtForm 
         className="form-container white-box"
-        onSubmit={_ => console.log('3e')}
-      >
+        onSubmit={_ => console.log('3e', formData)}
+      >  
         <AtInput
           name='value6'
           border={true}
@@ -46,7 +53,7 @@ export default function Identify() {
           value={formData.verifyCode}
           onChange={ code => action.patchValue('verifyCode', code.toString()) }
         >
-          <VerifyCode disabled={!/^1\d{10}$/.test(formData.phone)}></VerifyCode>
+          <VerifyCode disabled={!/^1\d{10}$/.test(formData.phone)} phone={formData.phone}></VerifyCode>
         </AtInput>
         <AtButton type="primary" onClick={_ => submit()}>确认</AtButton>
       </AtForm>      

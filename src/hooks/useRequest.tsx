@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro';
 import { SERVER_ROOT_PATH } from "../const/http.config";
 import { from } from "rxjs";
 import { pluck, tap } from 'rxjs/operators'
-import { HttpState, RequestOption } from "../domain/http.domain";
+import { HttpState, RequestOption, ResponseCode } from "../domain/http.domain";
 
 const defaultOption: RequestOption = {
   auto: true,
@@ -14,7 +14,7 @@ const defaultOption: RequestOption = {
 export function useRequest<T>(
   url: string,
   param: any = {},
-  options?: RequestOption
+  options: RequestOption = {}
 ): [T, (query?: any) => void, HttpState] {
 
   const [httpState, setState] = useState<HttpState>(null);
@@ -23,6 +23,7 @@ export function useRequest<T>(
   const setting = { ...defaultOption, ...options };
 
   const request = (query = {}) => {
+    console.log(query)
     from(
       Taro.request({
         url: SERVER_ROOT_PATH + url,
@@ -30,11 +31,24 @@ export function useRequest<T>(
         method: setting.method
       })
     ).pipe(
-      tap(_ => setState('success'), _ => setState('failed') ),
+      tap(res => checkResCode(res.data.code, res.data.msg), _ => setState('failed') ),
       pluck<unknown, T>('data', ...setting.plucker)
     )
     .subscribe( data => {setData(data); console.log(data)} )    
   }  
+
+  const checkResCode = (code: number, msg: string) => {
+    setState('success')
+    switch(code) {
+      default:
+        msg && (options.failedTip = msg);
+        setState('failed');
+      break;
+      case ResponseCode.success:
+        setState('success');
+      break; 
+    }
+  }
 
   useEffect( () => {
     if(!setting.auto) return;
@@ -45,7 +59,7 @@ export function useRequest<T>(
   useEffect( () => {    
     switch(httpState) {
       case 'failed':
-        Taro.showToast({title: '请求失败...', icon: 'none'});        
+        Taro.showToast({title: options.failedTip || '请求失败...', icon: 'none'});        
       break;
       case 'success':
         setting.successTip && Taro.showToast({title: setting.successTip , icon: 'success'});        

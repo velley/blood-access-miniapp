@@ -1,6 +1,6 @@
 import { Picker, View, Text, Input } from "@tarojs/components";
 import React, { useEffect, useState } from "react";
-import { AtInput, AtList, AtListItem, AtInputNumber, AtImagePicker } from "taro-ui";
+import { AtInput, AtList, AtListItem, AtInputNumber, AtImagePicker, AtButton } from "taro-ui";
 import { FeedBackData, OrganData } from "../../../domain/feedback.domain";
 import { useFormer } from "../../../hooks/useFormer";
 import { useRequest } from "../../../hooks/useRequest";
@@ -110,6 +110,8 @@ export default function FeedbackForm() {
       </AtList>  
 
       <PhotoUploader urlHandler={ event => action.patchValue('xgccImageUrl', event)}></PhotoUploader>  
+
+      <AtButton full type="primary" onClick={_ => console.log(formData)}>提交</AtButton>
     </View>
   )
 }
