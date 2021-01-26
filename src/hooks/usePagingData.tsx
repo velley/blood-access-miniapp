@@ -69,13 +69,19 @@ export function usePagingData<T>(
 
   // 监听pageNo变量变化并发送数据请求
   useEffect(() => {
+    if(options.manual && pageNo === 0) return;
     if(!refreshing && pageNo === 0) return;
     getPagingData({startPage: pageNo, pageSize: 10});
-  }, [pageNo, refreshing])
+  }, [pageNo])
 
   const refresh = () => {   
     setRefreshState(true);    
-    setPageNo(0);    
+    if(pageNo !== 0) {      
+      setPageNo(0);   
+    } else {
+      getPagingData({startPage: pageNo, pageSize: 10})
+    }
+     
   }
 
   const nextPage = () => {        

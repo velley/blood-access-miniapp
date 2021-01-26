@@ -4,7 +4,11 @@
   .sub-title{
     margin: 20px 0;
     padding: 20px ;
-    border-top: 4px dashed #ccc;
+    font-weight: bold;
+    // border-top: 4px dashed #ccc;
+  }
+  .form-item{
+    margin-bottom: 30px;
   }
 }
 .at-input-number{

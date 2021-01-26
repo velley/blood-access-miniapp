@@ -6,6 +6,7 @@ import { NotifyData } from "../../domain/notify.domain"
 import { usePagingData } from "../../hooks/usePagingData";
 
 import './index.scss'
+import { timeToString } from "../../utils/format";
 
 export default function Notify() {
 
@@ -16,7 +17,7 @@ export default function Notify() {
       {
         notifyList?.map( item => (
           <View className="notify-box-item" onClick={ _ => Taro.navigateTo({url: `/pages/notify-detail/index?id=${item.taskRecordId}`})}>
-            <View className="time">{item?.notifyTime}</View>
+            <View className="time">{timeToString(item?.notifyTime)}</View>
             <View className="conent-card white-box shadow">
               <AtTag className={`tag text ${item?.type === 1 ? 'doctor' : ''}`}  active size="small">{item?.type === 1 ? '系统消息' : '医生回复'}</AtTag>
               { item.readStatus ? "" :  <View className="unread-point"></View> }                     

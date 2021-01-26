@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Taro from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Text, OpenData } from '@tarojs/components';
 import { AtAvatar, AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -20,10 +20,13 @@ export default function Mine() {
 			<View 
 				className="top-header white-box shadow at-row at-row__align--center"				
 			>
-				<AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
+				<View className="avatar">
+					<OpenData type='userAvatarUrl' />
+				</View>
+				 
 				{ 
 					patient ? <View className="patient-info">{patient.name}  /   {patient.phone}</View> : (
-						<View onClick={_ => Taro.navigateTo({url: '/pages/identify/index'})}>
+						<View onClick={_ => Taro.navigateTo({url: '/pages/identify/index'})} className="at-row at-row__align--center">
 							<Text className="at-col at-col__offset-1">添加就诊人</Text>
 							<AtIcon value='chevron-right' size='30' color="#1890ff"></AtIcon>
 						</View>						

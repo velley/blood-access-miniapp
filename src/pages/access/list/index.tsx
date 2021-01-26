@@ -1,11 +1,15 @@
 import { View } from "@tarojs/components";
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuthInfo } from "../../../hooks/useLogin";
 import { usePagingData } from "../../../hooks/usePagingData";
 
 export default function AccessList () {
   const [, patient] = useAuthInfo()
-  const [list] = usePagingData('/miniapp/queryTreatmentByPage', {patientId: patient?.patientId}, {manual: true})
+  const [list, action] = usePagingData('/miniapp/queryTreatmentByPage', {patientId: patient?.patientId}, {manual: true});
+
+  useEffect( () => {
+    if(patient) action.refresh()
+  }, [patient])
 
   return list && (
     <View className="page">
