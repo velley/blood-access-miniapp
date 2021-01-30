@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HttpState, RequestOption } from "../domain/http.domain";
 import { useRequest } from "./useRequest";
 
@@ -7,6 +7,7 @@ type PagingState = 'empty' | 'unfulled' | 'fulled';
 interface PagingAction {
   refresh: () => void;
   nextPage: () => void;
+  setFilters: (querys: object) => void;
 }
 
 interface PagingData<T> {
@@ -43,7 +44,10 @@ export function usePagingData<T>(
   const [ refreshing, setRefreshState ]           = useState<boolean>(true);
   const [ pageNo, setPageNo ]                     = useState(0);
   const [ listCache, setCache ]                   = useState<T[]>([]);
+  const [ filters, setFilters ]                   = useState(querys);
 
+  const counter = useRef(0);
+  counter.current ++ ;
   
   useEffect( () => {  
     
@@ -71,18 +75,24 @@ export function usePagingData<T>(
   useEffect(() => {
     if(options.manual && pageNo === 0) return;
     if(!refreshing && pageNo === 0) return;
-    getPagingData({startPage: pageNo, pageSize: 10});
+    getPagingData({startPage: pageNo, pageSize: 10, ...filters});
   }, [pageNo])
 
   const refresh = () => {   
-    setRefreshState(true);    
+    console.log('refresh')
+    if(counter.current !== 1) setRefreshState(true);    
     if(pageNo !== 0) {      
       setPageNo(0);   
     } else {
-      getPagingData({startPage: pageNo, pageSize: 10})
-    }
-     
+      getPagingData({startPage: pageNo, pageSize: 10, ...filters})
+    }     
   }
+
+  useEffect( () => {
+    if(counter.current === 1) return;    
+    refresh()
+  }, [filters])
+
 
   const nextPage = () => {        
     if(pagingState === 'fulled') return;
@@ -91,7 +101,7 @@ export function usePagingData<T>(
 
   return [
     listCache,
-    { refresh, nextPage },
+    { refresh, setFilters, nextPage },
     { httpState, pagingState, refreshing }
   ]
   

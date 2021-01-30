@@ -11,6 +11,8 @@ export default {
     'pages/feedback/form/index',
     'pages/feedback/detail/index',
     'pages/access/list/index',
+    'pages/access/detail/index',
+    'pages/schedule/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -20,6 +22,7 @@ export default {
   },
   tabBar: {
     "selectedColor": "#40a9ff",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

@@ -1,0 +1,20 @@
+.schedule-container{
+  .item{
+    position: relative;
+    padding-top: 30px;
+    margin: 30px;
+    .time{
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      color:  #1890ff;
+      font-size: 28px;
+      .at-icon{
+        font-size: 32px;
+        margin-right: 4px;
+        position: relative;
+        top:-2px;
+      }
+    }
+  }
+}

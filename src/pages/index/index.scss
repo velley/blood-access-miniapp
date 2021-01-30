@@ -1,5 +1,5 @@
 .banner-container{
-  min-height: 420px;
+  min-height: 400px;
   background: #f3f3f3;
 }
 
@@ -15,29 +15,29 @@
     .article-item{      
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin: 20px 0;
       .title{
         display: block;
         padding-bottom: 30px;
         font-weight: bold;
       }
-      .left{
+      .content-box{
+        display: flex;
         .content{
+          // border:1px solid red;
+          width:200px;
           text-indent: 60px;
           font-size: 30px;
           line-height: 45px;
           overflow : hidden;
           text-overflow: ellipsis;
+          margin-right: 15px;
           display: -webkit-box;
-          -webkit-line-clamp: 2;
+          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
+          flex:1;          
         }
-      }
-      .photo{
-        width: 3600px;
-        height: 300px;
-        margin-left: 30px;
-      }
+      }      
       
     }
   }

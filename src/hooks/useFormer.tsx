@@ -6,8 +6,9 @@ interface FormScope{
   [prop: string] : any;
 }
 
-interface FormAction<T> {
-  patchValue: (key: keyof T, value: any) => void
+interface FormAction<T, R> {
+  patchValue: (key: keyof T, value: any) => void;
+  resData: R;
 }
 
 interface FormState {
@@ -17,12 +18,12 @@ interface FormState {
   checking?: boolean;
 }
 
-export function useFormer<T extends FormScope>(
+export function useFormer<T extends FormScope, R = any>(
   url: string,
   data: T
-): [T, (data?: any) => void, FormAction<T>, FormState] {
+): [T, (data?: any) => void, FormAction<T, R>, FormState] {
   const [formData, setFormData] = useState<T>(data);
-  const [, request, httpState] = useRequest(url, {}, {auto: false, successTip: '提交成功'});
+  const [resData, request, httpState] = useRequest<R>(url, {}, {auto: false, successTip: '提交成功'});
 
   const submit = (dat: any = {}) => {
     request({...formData, ...data})
@@ -35,7 +36,7 @@ export function useFormer<T extends FormScope>(
   return [
     formData,
     submit,
-    { patchValue },
+    { patchValue, resData },
     { httpState }
   ]
 }

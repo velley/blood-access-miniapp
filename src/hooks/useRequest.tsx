@@ -23,7 +23,7 @@ export function useRequest<T>(
   const setting = { ...defaultOption, ...options };
 
   const request = (query = {}) => {
-    console.log(query)
+    console.log('http start')
     from(
       Taro.request({
         url: SERVER_ROOT_PATH + url,
@@ -41,7 +41,9 @@ export function useRequest<T>(
     setState('success')
     switch(code) {
       default:
+        console.log(msg)
         msg && (options.failedTip = msg);
+        // Taro.showToast({title: msg || '请求失败...', icon: 'none'});      
         setState('failed');
       break;
       case ResponseCode.success:
@@ -59,7 +61,7 @@ export function useRequest<T>(
   useEffect( () => {    
     switch(httpState) {
       case 'failed':
-        Taro.showToast({title: options.failedTip || '请求失败...', icon: 'none'});        
+        // Taro.showToast({title: options.failedTip || '请求失败...', icon: 'none'});        
       break;
       case 'success':
         setting.successTip && Taro.showToast({title: setting.successTip , icon: 'success'});        

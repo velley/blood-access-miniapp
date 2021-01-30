@@ -11,10 +11,10 @@ interface LoginResData {
   patient: PatientData;
 }
 
-export function useAuthInfo(): [string, PatientData] {
-  const [data, login]             = useRequest<LoginResData>('/miniapp/loginByWxCode', {}, {auto: false});
+export function useAuthInfo(check?: boolean): [string, PatientData, (d?: PatientData) => void] {
+  const [data, login, status]             = useRequest<LoginResData>('/miniapp/loginByWxCode', {}, {auto: false});
   const [openid, setOpenid]       = useState('');
-  const [patientInfo, setPatient] = useState<PatientData>()
+  const [patientInfo, setPatient] = useState<PatientData>();
 
   useLayoutEffect( () => {
     if(Taro.getStorageSync('openid')) {
@@ -28,13 +28,17 @@ export function useAuthInfo(): [string, PatientData] {
   }, [])
 
   useEffect( () => {
-    if(!data) return;
+    if(!data) {
+      if(check && status ==='success' ) {
+        Taro.navigateTo({url: '/pages/identify/index?tips=true'})
+      }
+      return;
+    } 
     setOpenid(data.openid);
     setPatient(data.patient);
     Taro.setStorage({key: 'openid', data: data.openid});
     Taro.setStorage({key: 'patient', data: data.patient});
-
   }, [data])
 
-  return [openid, patientInfo];
+  return [openid, patientInfo, setPatient];
 }

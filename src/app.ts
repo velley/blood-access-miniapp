@@ -1,13 +1,21 @@
 import React, { Component} from 'react';
+import Taro from '@tarojs/taro'
 import './app.scss';
 
 class App extends Component {
 
   componentDidMount () {}
 
-  componentDidShow () {}
+  componentDidShow () {
+     
+  }
 
   componentDidHide () {}
+
+  componentWillUnmount() {
+    Taro.removeStorage({key: 'patient'})
+    Taro.removeStorage({key: 'openid'})
+  }
 
   componentDidCatchError () {}
 

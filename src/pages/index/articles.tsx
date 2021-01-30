@@ -2,59 +2,70 @@ import { View, Text, RichText, ScrollView, Image } from "@tarojs/components";
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArticleData } from "../../domain/information.domain";
 import { usePagingData } from "../../hooks/usePagingData";
-import { AtSegmentedControl } from 'taro-ui';
+import { AtTabs } from 'taro-ui';
 import Taro, { usePageScroll } from '@tarojs/taro';
 import { useRequest } from "../../hooks/useRequest";
 import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { debounceTime, tap } from "rxjs/operators";
+import { Empty } from "../../components/empty";
 
 export function Articles() {
 
-  const [ articleList, action, status ] = usePagingData<ArticleData>('/miniapp/queryArticleListByPage', {}, {method: 'POST'});
-  const [ groupList ] = useRequest('/miniapp/queryArticleGroupList');
-  const [ navIndex, setIndex ] = useState(0);
+  const [ articleList, action, status ] = usePagingData<ArticleData>('/miniapp/queryArticleListByPage', {}, {method: 'POST', manual: true});
+  const [ groupList ] = useRequest<any[]>('/miniapp/queryArticleGroupList');
+  const [freshing, setFreshing] = useState(false);
+  
+  const [ tabList, setTabs ]   = useState<any>();
+  const [ active, setActive ]  = useState(0);
 
+  useEffect( () => {
+    if(!groupList) return;
+    const tabs = groupList.map( item => ({ title: item.articleGroupName}));    
+    !tabList && setTabs(tabs);    
+    
+    action.setFilters({ articleGroupId: groupList[active].articleGroupId }) ;
+    console.log(freshing)
+  }, [groupList, active])
+
+  useEffect( () => {
+    console.log('fresh', freshing)
+    setFreshing(false)
+  }, [articleList])
+ 
   const pull$ = useMemo( () => new Subject(), [articleList] );
   useEffect( () => {
     const sub = pull$.pipe(
-      debounceTime(500)
-    ).subscribe( _ => action.refresh() );
-    return sub.unsubscribe()
-
+      debounceTime(500),
+    ).subscribe( _ => {action.refresh();console.log('hahah')} );
+    return () => setTimeout( _ => sub.unsubscribe(), 550) 
   }, [articleList])  
-
-  useEffect( () => {
-    console.log('res', articleList)
-  }, [articleList])
-
+  
   return (
-    <View className="article-container flex-1 col-page">
-      <AtSegmentedControl 
-        className="tab-nav"
-        values={['分类1', '分类2', '分类3']} 
-        current={navIndex} onClick={ index => setIndex(index)  }
-      /> 
+    <View className="article-container flex-1 col-page">      
+      <AtTabs customStyle="height: auto;" tabList={tabList} current={active} onClick={_ => setActive(_) }>       
+      </AtTabs>
       <ScrollView 
         scrollY 
         className="article-list flex-1" 
         refresherEnabled={true} 
-        refresherTriggered={status.refreshing}
-        onRefresherPulling={_ => pull$.next()}
+        refresherTriggered={freshing}
+        onRefresherPulling={_ => {pull$.next(); setFreshing(true)}}
         onScrollToLower={_ => action.nextPage()}
       >   
         {
-          articleList.map( article => (
+          articleList?.length ? articleList.map( article => (
             <View 
-              className="article-item white-box shadow at-row  at-row__justify--between" 
+              className="article-item white-box shadow " 
               onClick={ _ =>Taro.navigateTo({url: `/pages/article/index?articleId=${article.articleId}`})}
             > 
-              <View className="left">
-                <Text className="title">{article?.title}</Text>
-                <RichText className="content" nodes={article.content} />
+              <View className="g-title">{article?.title}</View>              
+              <View className="content-box ">                
+                <RichText className="content text" nodes={article.content.replace(/<img.+>/g, '')} />
+                {article.imageUrl && <Image style="width:120px;height:120px;background: #eee;" className="photo" mode="widthFix" src={article.imageUrl}></Image>} 
               </View>
-              {article.imageUrl && <Image className="photo" mode="widthFix" src={article.imageUrl}></Image>} 
+              
             </View>
-          ))
+          )) : (<Empty></Empty>)
         }
       </ScrollView>
     </View>    

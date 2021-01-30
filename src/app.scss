@@ -46,14 +46,35 @@ $color-info: #1890ff;
 }
 
 .text{
-  font-size: 24px;
+  font-size: 22px;
   line-height: 38px;
 }
 
 .m-text{
-  font-size: 30px;
+  font-size: 26px;
   line-height: 54px;
 }
+
+.g-title{
+  font-size: 32px;
+  font-weight: bold;
+  padding-bottom: 25px;
+}
+
+.text-item{
+  font-size: 26px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #f6f6f6;
+  .title{
+    color: #333;
+  }
+  .value{
+    color: #888;
+  }
+}
+
 
 .full-photo{
   width: 100%;
@@ -66,4 +87,9 @@ $color-info: #1890ff;
 .dash-line{
   border-bottom: 1px dashed #eee;
   margin: 20px 0;
+}
+
+.empty{
+  text-align: center;
+  padding: 30px 0;
 }

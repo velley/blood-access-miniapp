@@ -1,0 +1,13 @@
+.item{
+  margin: 20px;
+  position: relative;
+  .info-item{
+    padding: 5px 0;
+  }
+  .at-icon{
+    position: absolute;
+    top: 45%;
+    right: 20px;
+    color: #999;
+  }
+}

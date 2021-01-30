@@ -1,0 +1,16 @@
+.access-detail{
+  padding: 25px;
+  .info-group{
+    margin: 20px 0;
+    .sub-title{
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  }
+}
+.text-cell{
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  font-size: 26px;
+}

@@ -3,6 +3,7 @@ import { useRouter } from "@tarojs/taro";
 import React, { useEffect } from 'react';
 import { ArticleData } from "../../domain/information.domain";
 import { useRequest } from "../../hooks/useRequest";
+import { timeToString } from "../../utils/format";
 
 import './index.scss'
 
@@ -18,9 +19,13 @@ export default function Article() {
       <View className='at-article__h1'>
         {details.title}
       </View>
-      <View className='at-article__info'>
+      <View className='at-article__info' style="margin-bottom: 5px">
         {details.publisher}
       </View>
+      <View className='at-article__info'>
+        {timeToString(details.cdt)}
+      </View>
+      
       <RichText className='at-article__content' nodes={details.content}></RichText>
     </View>  
   )    

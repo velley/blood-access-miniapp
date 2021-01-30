@@ -5,6 +5,7 @@ import { NotifyData } from "../../domain/notify.domain";
 import { useRequest } from "../../hooks/useRequest";
 
 import './index.scss';
+import { timeToString } from '../../utils/format';
 
 export default function NotifyDetail() {
 
@@ -16,7 +17,7 @@ export default function NotifyDetail() {
 
       <View className="m-text indent">{detail.notifyContent}</View>
 
-      <View className="text time">{detail.sendTime}</View>
+      <View className="text time">{ timeToString(detail.notifyTime) }</View>
       
     </View>
   )

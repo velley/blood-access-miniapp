@@ -1,45 +1,50 @@
-import { View, Text } from "@tarojs/components"
+import { View, Text, ScrollView } from "@tarojs/components"
 import React, { useEffect } from 'react';
 import { AtButton } from "taro-ui";
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { usePagingData } from "../../../hooks/usePagingData";
 import { FeedBackData } from "../../../domain/feedback.domain";
 
 import './index.scss'
 import { useAuthInfo } from "../../../hooks/useLogin";
+import { Empty } from "../../../components/empty";
 
 export default function FeedBackList() {
 
-  const [, patient]     = useAuthInfo();
-  const [list, action]  = usePagingData<FeedBackData>('/miniapp/getUserFeedback', {patientId: patient?.patientId}, {manual: true});  
+  const [, patient]     = useAuthInfo(true);
+  const [list, action, status]  = usePagingData<FeedBackData>('/miniapp/getUserFeedback', {patientId: patient?.patientId}, {manual: true});  
 
   useEffect( () => {
-    if(patient) action.refresh()
+    if(patient) action.setFilters({patientId: patient?.patientId})
   }, [patient])
+
+  useDidShow( () => {
+    status.httpState && action.refresh()
+  })   
 
   return (
     <View className="feedback-container page col-page grey-bg">
-      <View className="group flex-1 scroll-y">
+      <ScrollView className="group flex-1 scroll-y" scrollY onScrollToLower={_ => action.nextPage()}>
         {
-          list.map( item => (
+          list.length ? list.map( item => (
             <View 
               className="item white-box" 
               onClick={ _ => Taro.navigateTo({url: `/pages/feedback/detail/index?id=${item.feedbackId}`})}
             >              
               <View className="info">
-                <View className="info-cell">血透机构：{item.organizationId}</View>
-                <View className="info-cell">血透时间：{item.datetime}</View>
+                <View className="info-cell m-text">血透机构：{item.organizationId}</View>
+                <View className="info-cell m-text">血透时间：{item.datetime}</View>
               </View>
-              <View className="reply">
+              <View className="reply m-text">
                 {item.hasReply ? `医生回复：${item.reply}` : '暂无医生回复'}
               </View>
             </View>
-          ))
+          )) : <Empty></Empty>
         }
-      </View>
+      </ScrollView>
       <AtButton 
         full 
-        type="secondary" 
+        type="primary" 
         circle onClick={ _ => Taro.navigateTo({url: '/pages/feedback/form/index'})}
       >
         添加反馈

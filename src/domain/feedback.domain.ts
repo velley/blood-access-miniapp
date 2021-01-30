@@ -10,7 +10,8 @@ export interface FeedBackData {
   weight?: string;
   xgccImageUrl?: string;
   hasReply?: 0 | 1;
-	reply?: string;
+  reply?: string;
+  description?: string;
 }
 
 export interface OrganData {

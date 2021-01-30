@@ -1,5 +1,5 @@
 import { View } from "@tarojs/components";
-import Taro from '@tarojs/taro';
+import Taro, { useRouter } from '@tarojs/taro';
 import React, { useEffect } from "react";
 import { AtButton, AtForm, AtInput } from "taro-ui";
 import { useFormer } from "../../hooks/useFormer";
@@ -17,17 +17,28 @@ interface IdentifyData{
 
 export default function Identify() {
 
+  const router = useRouter()
   const [ openid ] = useAuthInfo();
   const [ formData, submit, action, formState ] = useFormer<IdentifyData>('/miniapp/bindPatient', { openid });
+
+  useEffect( () => {
+    if(router.params.tips) {
+      Taro.showToast({title: '请绑定就诊人', icon: 'none'})
+    }
+  })
 
   useEffect( () => {
     console.log('openid', openid)
   }, [openid])
 
   useEffect( () => {
-    console.log("success")
-    if(formState.httpState === 'success') Taro.navigateBack();
+    if(formState.httpState === 'success' && action.resData) {
+      action.resData && Taro.setStorage({key: 'patient', data: action.resData});
+      Taro.navigateBack();
+    };    
   }, [formState])
+
+ 
   
   return(
     <View className="identify-container page grey-bg">

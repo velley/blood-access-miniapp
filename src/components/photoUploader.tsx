@@ -12,12 +12,13 @@ export function PhotoUploader(props: { urlHandler: (url: string | string[]) => v
     console.log(files);
     Taro.uploadFile({
       url: 'https://wx.xuetouyun.com/miniapp/addImage',
-      name: 'feed',
-      filePath: files[0].url
+      name: 'file',
+      filePath: files[0].url,
+      success: res => props.urlHandler( JSON.parse(res.data).data )
     })
   }, [files])
 
   return (
-    <AtImagePicker files={files} onChange={ setFiles }></AtImagePicker>
+    <AtImagePicker count={1} showAddBtn={files.length < 1} files={files} onChange={ setFiles }></AtImagePicker>
   )
 }
