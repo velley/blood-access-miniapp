@@ -12,10 +12,14 @@ import { timeToString } from '../../utils/format';
 export default function Mine() {
 
 	const [openid, patient, setPatient ] = useAuthInfo();
-	const [ schedule, getSchedule ] = useRequest<any>('/miniapp/queryLatestSchedule', { }, {auto: false});
+  const [ schedule, getSchedule ] = useRequest<any>('/miniapp/queryLatestSchedule', { }, {auto: false});
+  const [ msgInfo, getMsgInfo ] = useRequest<any>('/miniapp/checkMsgFeedbackUnread', {}, {auto: false})
 
 	useEffect( () => {
-		if(patient) getSchedule({patientId: patient?.patientId})
+		if(patient) {
+      getSchedule({patientId: patient?.patientId});
+      getMsgInfo({patientId: patient?.patientId});
+    }
 	}, [patient])
 
 	useDidShow( () => {
@@ -53,28 +57,30 @@ export default function Mine() {
 
 			<View className="nav-box white-box">
 				<Text className="nav-header">常用服务</Text>
-				<View className="nav-list at-row at-row__justify--around">
-					<View className="nav-item " onClick={ _ =>Taro.navigateTo({url: '/pages/doctor/index'}) }>
+				<View className="nav-list at-row">
+					<View className="nav-item flex-1" onClick={ _ =>Taro.navigateTo({url: '/pages/doctor/index'}) }>
 						<AtIcon className="nav-ico" value='streaming' size='40' color='#1890ff'></AtIcon>
 						<Text className="m-text">我的医生</Text>
 					</View>
-					<View className="nav-item" onClick={ _ =>Taro.navigateTo({url: '/pages/notify/index'}) }>
+					<View className="nav-item flex-1" onClick={ _ =>Taro.navigateTo({url: '/pages/notify/index'}) }>
 						<AtIcon className="nav-ico" value='bell' size='40' color='#1890ff'></AtIcon>
 						<Text className="m-text">我的消息</Text>
+            {msgInfo?.msgUnread>0 && <Text className="m-text" style="color:red;">({msgInfo.msgUnread})</Text>}
 					</View>					
 				</View>
 			</View>
 
 			<View className="nav-box white-box">
 				<Text className="nav-header">问诊服务</Text>
-				<View className="nav-list at-row at-row__justify--around">
-					<View className="nav-item " onClick={_ => Taro.navigateTo({url: '/pages/feedback/list/index'})}>
+				<View className="nav-list at-row">
+					<View className="nav-item flex-1" onClick={_ => Taro.navigateTo({url: '/pages/feedback/list/index'})}>
 						<AtIcon className="nav-ico" value='message' size='40' color='#1890ff'></AtIcon>
 						<Text className="m-text">血透反馈</Text>
+            { msgInfo?.feedbackUnread>0 && <Text className="m-text" style="color:red;">({msgInfo.feedbackUnread})</Text>}
 					</View>
-					<View className="nav-item " onClick={_ => Taro.navigateTo({url: '/pages/access/list/index'})}>
+					<View className="nav-item flex-1" onClick={_ => Taro.navigateTo({url: '/pages/access/list/index'})}>
 						<AtIcon className="nav-ico" value='bookmark' size='40' color='#1890ff'></AtIcon>
-						<Text className="m-text">随访记录</Text>
+						<Text className="m-text">随访记录</Text>            
 					</View>					
 				</View>
 			</View>

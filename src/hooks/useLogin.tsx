@@ -28,17 +28,24 @@ export function useAuthInfo(check?: boolean): [string, PatientData, (d?: Patient
   }, [])
 
   useEffect( () => {
-    if(!data) {
-      if(check && status ==='success' ) {
-        Taro.navigateTo({url: '/pages/identify/index?tips=true'})
-      }
-      return;
-    } 
-    setOpenid(data.openid);
-    setPatient(data.patient);
-    Taro.setStorage({key: 'openid', data: data.openid});
-    Taro.setStorage({key: 'patient', data: data.patient});
+    console.log('login data', status)
+    // if(!data?.patient && check) {      
+    //   Taro.redirectTo({url: '/pages/identify/index?tips=true'})         
+    // }
+    if(data) {
+      setOpenid(data?.openid);
+      setPatient(data?.patient);
+      Taro.setStorage({key: 'openid', data: data.openid});
+      Taro.setStorage({key: 'patient', data: data.patient});
+    }    
   }, [data])
+
+  useEffect( () => {
+    const patient = Taro.getStorageSync('patient')
+    if(check && !patient) {
+      Taro.redirectTo({url: '/pages/identify/index?tips=true'})
+    }
+  }, [])
 
   return [openid, patientInfo, setPatient];
 }

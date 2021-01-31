@@ -25,7 +25,7 @@ export function useFormer<T extends FormScope, R = any>(
   const [formData, setFormData] = useState<T>(data);
   const [resData, request, httpState] = useRequest<R>(url, {}, {auto: false, successTip: '提交成功'});
 
-  const submit = (dat: any = {}) => {
+  const submit = (data: any = {}) => {
     request({...formData, ...data})
   }
 

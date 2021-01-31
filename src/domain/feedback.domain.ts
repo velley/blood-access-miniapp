@@ -3,6 +3,7 @@ export interface FeedBackData {
 	patientId?: number;
   datetime?: string; 
   organizationId?: number;
+  organizationName?: string;
   dmccd?: string;
   jmccd?: string;
   sp?: string;
@@ -12,6 +13,7 @@ export interface FeedBackData {
   hasReply?: 0 | 1;
   reply?: string;
   description?: string;
+  readStatus?: 0 | 1;
 }
 
 export interface OrganData {

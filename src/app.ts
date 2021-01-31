@@ -4,17 +4,24 @@ import './app.scss';
 
 class App extends Component {
 
-  componentDidMount () {}
-
-  componentDidShow () {
-     
+  componentDidMount () {
+    Taro.removeStorage({key: 'patient'});
+    Taro.removeStorage({key: 'openid'});
   }
 
-  componentDidHide () {}
+  componentDidShow () {
+    //  Taro.authorize({
+    //   scope: "scope.userInfo"
+    // })
+  }
+
+  componentDidHide () {
+    
+  }
 
   componentWillUnmount() {
-    Taro.removeStorage({key: 'patient'})
-    Taro.removeStorage({key: 'openid'})
+    Taro.removeStorage({key: 'patient'});
+    Taro.removeStorage({key: 'openid'});
   }
 
   componentDidCatchError () {}

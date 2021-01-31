@@ -1,4 +1,4 @@
-import { View } from "@tarojs/components";
+import { Button, View } from "@tarojs/components";
 import Taro, { useRouter } from '@tarojs/taro';
 import React, { useEffect } from "react";
 import { AtButton, AtForm, AtInput } from "taro-ui";
@@ -38,6 +38,10 @@ export default function Identify() {
     };    
   }, [formState])
 
+  const setWxUserInfo = (data: any) => {
+    console.log(data.detail.userInfo)
+    submit({...data.detail.userInfo, openid})
+  }
  
   
   return(
@@ -66,7 +70,7 @@ export default function Identify() {
         >
           <VerifyCode disabled={!/^1\d{10}$/.test(formData.phone)} phone={formData.phone}></VerifyCode>
         </AtInput>
-        <AtButton type="primary" onClick={_ => submit()}>确认</AtButton>
+        <Button style="background:#0050b3" type="primary" disabled={!formData.phone || !formData.verifyCode} openType="getUserInfo" onGetUserInfo={data => setWxUserInfo(data)} >确认</Button>
       </AtForm>      
     </View>
   )
