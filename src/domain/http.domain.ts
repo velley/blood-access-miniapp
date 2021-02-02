@@ -14,7 +14,8 @@ export enum ResponseCode {
 	user_not_exist = 101,
 	password_error = 102,
 	valid_token = 105,
-	http_error = 500,
+  http_error = 500,
+  no_schedule = 180
 }
 
 export type HttpState = 'pending' | 'success' | 'failed';

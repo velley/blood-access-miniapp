@@ -36,7 +36,7 @@ export function Banner() {
       {
         bannerList?.map( item => (
           <SwiperItem onClick={_ => gotoByType(item)}>            
-            <Image className="full-photo" src={item.imageUrl} mode="aspectFit"></Image>
+            <Image className="full-photo" src={item.imageUrl} mode="heightFix" ></Image>
           </SwiperItem>
         ))
       }    

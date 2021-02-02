@@ -23,7 +23,7 @@ export default function FeedBackDataDetail() {
         </View>
         <View className="text-item">
           <Text className="title">血透机构</Text>
-          <Text className="value">{detail.organizationId.toString()}</Text>
+          <Text className="value">{detail.organizationName}</Text>
         </View>
         <View className="text-item">
           <Text className="title">动脉穿刺点</Text>

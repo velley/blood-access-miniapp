@@ -15,7 +15,7 @@ export default function FeedbackForm() {
   const [, patient] = useAuthInfo()
 
   // 构建表单对象
-  const [formData, submit, action, formState] = useFormer<FeedBackData>('/miniapp/addFeedback', { patientId: patient?.patientId });
+  const [formData, submit, action, formState] = useFormer<FeedBackData>('/miniapp/addFeedback', {});
   useEffect(() => {
     if (formState.httpState) Taro.navigateBack()
   }, [formState])
@@ -32,7 +32,7 @@ export default function FeedbackForm() {
     }
 
     if(formData.weight && formData.sp && formData.dp && formData.datetime) {
-      submit();
+      submit({ patientId: patient?.patientId });
       Taro.requestSubscribeMessage({
         tmplIds: ['hotyl5DLXO5Jwac1cHSagrkquZzOd6K1syZ7jiDF7yE'],
         success(res) {
@@ -129,7 +129,7 @@ export default function FeedbackForm() {
         <View className="form-item white-box">
           <View className='text-item' >
             <Text className="title">体重/kg</Text> 
-            <AtInputNumber className="value" type="number" min={10} max={200} step={1} value={formData.weight} onChange={event => action.patchValue('weight', event)}>
+            <AtInputNumber className="value" type="number" min={0} max={200} step={1} value={formData.weight} onChange={event => action.patchValue('weight', event)}>
             </AtInputNumber>
           </View>
         </View>

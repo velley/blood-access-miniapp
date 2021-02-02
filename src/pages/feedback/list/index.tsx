@@ -32,12 +32,13 @@ export default function FeedBackList() {
               onClick={ _ => Taro.navigateTo({url: `/pages/feedback/detail/index?id=${item.feedbackId}`})}
             >              
               <View className="info">
-                <View className="info-cell m-text">血透机构：{item.organizationId}</View>
+                <View className="info-cell m-text">血透机构：{item.organizationName}</View>
                 <View className="info-cell m-text">血透时间：{item.datetime}</View>
               </View>
               <View className="reply m-text">
                 {item.hasReply ? `医生回复：${item.reply}` : '暂无医生回复'}
               </View>
+              { !item.hasReply ? '' : item.readStatus ? "" :  <View className="unread-point"></View> }
             </View>
           )) : <Empty></Empty>
         }

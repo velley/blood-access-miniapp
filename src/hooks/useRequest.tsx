@@ -38,15 +38,16 @@ export function useRequest<T>(
   }  
 
   const checkResCode = (code: number, msg: string) => {
-    setState('success')
+    // setState('success')
     switch(code) {
       default:
-        console.log(msg)
+        console.log(msg, code)
         msg && (options.failedTip = msg);
-        // Taro.showToast({title: msg || '请求失败...', icon: 'none'});      
+        Taro.showToast({title: msg || '请求失败...', icon: 'none'});      
         setState('failed');
       break;
       case ResponseCode.success:
+      case ResponseCode.no_schedule:
         setState('success');
       break; 
     }
