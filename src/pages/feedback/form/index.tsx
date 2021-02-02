@@ -1,6 +1,6 @@
-import { Picker, View, Text, Input, Textarea } from "@tarojs/components";
+import { Picker, View, Text, Textarea } from "@tarojs/components";
 import React, { useEffect, useState } from "react";
-import { AtInput, AtList, AtListItem, AtInputNumber, AtButton } from "taro-ui";
+import { AtInputNumber, AtButton } from "taro-ui";
 import { FeedBackData, OrganData } from "../../../domain/feedback.domain";
 import { useFormer } from "../../../hooks/useFormer";
 import { useRequest } from "../../../hooks/useRequest";
@@ -136,12 +136,12 @@ export default function FeedbackForm() {
 
         <View className="form-item white-box">
           <Text className="g-title">反馈描述</Text>
-          <Textarea style='min-height:40px;padding:0 30rpx;' autoHeight onInput={ e => action.patchValue('description', e.detail.value)}/>          
+          <Textarea style='min-height:40px;padding:10rpx  0;' placeholder="请留言您的问题，医生会为您解答" autoHeight onInput={ e => action.patchValue('description', e.detail.value)}/>          
         </View>
 
         <View className="form-item white-box">
           <Text className="g-title">反馈图片</Text>          
-          <PhotoUploader urlHandler={event => {action.patchValue('xgccImageUrl', event);console.log('upload success', event)}}></PhotoUploader>
+          <PhotoUploader count={3} urlHandler={event => {action.patchValue('xgccImageUrl', event);console.log('upload success', event)}}></PhotoUploader>
         </View>
       </View>
 

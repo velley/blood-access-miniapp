@@ -80,7 +80,7 @@ export default function Mine() {
 					</View>
 					<View className="nav-item flex-1" onClick={_ => Taro.navigateTo({url: '/pages/access/list/index'})}>
 						<AtIcon className="nav-ico" value='bookmark' size='40' color='#1890ff'></AtIcon>
-						<Text className="m-text">随访记录</Text>            
+						<Text className="m-text">血管通路</Text>            
 					</View>					
 				</View>
 			</View>
