@@ -10,11 +10,15 @@ export function PhotoUploader(props: { urlHandler: (url: string | string[]) => v
   useEffect(()=> {
     if(!files?.length) return;
     console.log(files);
+    Taro.showToast({title: '上传中...', icon:'loading'})
     Taro.uploadFile({
       url: 'https://wx.xuetouyun.com/miniapp/addImage',
       name: 'file',
       filePath: files[0].url,
-      success: res => props.urlHandler( JSON.parse(res.data).data )
+      success: res => {
+        props.urlHandler( JSON.parse(res.data).data);
+        Taro.hideToast();
+      }
     })
   }, [files])
 
