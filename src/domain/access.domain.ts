@@ -1,6 +1,7 @@
 export interface AccessData {
 	treatmentId?: number;
-	patientId: number;
+  patientId: number;
+  patientNumber: string;
 	patientName?: string;
 	patientGroupId?: number;
 	patientGroupName?: string;

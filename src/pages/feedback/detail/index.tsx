@@ -50,7 +50,7 @@ export default function FeedBackDataDetail() {
 
       <View className="content white-box">
         <View className="g-title">反馈图片</View>
-         <PreviewImage src={[detail.xgccImageUrl]} />
+         <PreviewImage src={detail.xgccImageUrlArray} />
       </View>
 
       <View className="content white-box">

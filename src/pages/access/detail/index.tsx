@@ -17,7 +17,7 @@ export default function AccessDetail() {
     <View className="access-detail page scroll-y">
       <View className="text-cell">
         <Text className="title">患者编号：</Text>
-        <Text>{detail.patientId}</Text>
+        <Text>{detail.patientNumber}</Text>
       </View>
       <View className="text-cell">
         <Text className="title">患者姓名：</Text>

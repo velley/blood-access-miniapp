@@ -19,6 +19,8 @@ export function Banner() {
   const gotoByType = (item: BannerData) => {
     if(item.relateType === 1) {
       Taro.navigateTo({url: `/pages/article/index?articleId=${item.articleId}`})
+    } else {
+      Taro.navigateTo({url: `/pages/web/index?url=${item.linkUrl}`})
     }
   }
 

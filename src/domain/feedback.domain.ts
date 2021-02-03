@@ -10,6 +10,7 @@ export interface FeedBackData {
   dp?: string;
   weight?: string;
   xgccImageUrl?: string;
+  xgccImageUrlArray?: string[];
   hasReply?: 0 | 1;
   reply?: string;
   description?: string;

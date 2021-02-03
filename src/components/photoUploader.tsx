@@ -1,28 +1,43 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { AtImagePicker } from "taro-ui";
 import Taro from '@tarojs/taro';
 
-export function PhotoUploader(props: { urlHandler: (url: string | string[]) => void }) {
+export function PhotoUploader(props: {count?: number, urlHandler: (url: string | string[]) => void }) {
 
   const [files, setFiles] = useState([]);
   const [serveUrl, setUrl] = useState<string[]>([]);
+  const [index, setIndex] = useState(0);
+  const pathList = useMemo( () => [], []);
 
   useEffect(()=> {
     if(!files?.length) return;
-    console.log(files);
-    Taro.showToast({title: '上传中...', icon:'loading'})
+    Taro.showToast({title: '上传中...', icon: 'loading'})
+    const file = [...files].pop()
     Taro.uploadFile({
       url: 'https://wx.xuetouyun.com/miniapp/addImage',
       name: 'file',
-      filePath: files[0].url,
+      filePath: file.url,
       success: res => {
-        props.urlHandler( JSON.parse(res.data).data);
-        Taro.hideToast();
-      }
+        const url = JSON.parse(res.data).data;
+        pathList.push(url)
+        props.urlHandler(pathList)
+        Taro.hideToast()
+      } 
     })
   }, [files])
 
+  const onFileChange = (res: any[]) => {
+    if(res.length > files.length) {
+      setFiles(res)
+    } else {
+      pathList.splice(index,1);
+      files.splice(index,1)
+      props.urlHandler(pathList)
+    }
+    
+  }
+
   return (
-    <AtImagePicker count={1} showAddBtn={files.length < 1} files={files} onChange={ setFiles }></AtImagePicker>
+    <AtImagePicker count={props.count || 1} showAddBtn={files.length < props.count} files={files} onImageClick={setIndex} onChange={  res =>onFileChange(res) }></AtImagePicker>
   )
 }
