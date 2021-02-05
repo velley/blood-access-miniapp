@@ -11,7 +11,7 @@ interface LoginResData {
   patient: PatientData;
 }
 
-export function useAuthInfo(check?: boolean): [string, PatientData, (d?: PatientData) => void] {
+export function useAuthInfo(check?: boolean): [string, PatientData, (d?: PatientData) => void, () => void] {
   const [data, login, status]             = useRequest<LoginResData>('/miniapp/loginByWxCode', {}, {auto: false});
   const [openid, setOpenid]       = useState('');
   const [patientInfo, setPatient] = useState<PatientData>();
@@ -47,5 +47,10 @@ export function useAuthInfo(check?: boolean): [string, PatientData, (d?: Patient
     }
   }, [])
 
-  return [openid, patientInfo, setPatient];
+  const clear = () => {
+    Taro.removeStorageSync('patient');
+    setPatient(null);
+  }
+
+  return [openid, patientInfo, setPatient, clear];
 }

@@ -13,7 +13,7 @@ export default {
     'pages/access/list/index',
     'pages/access/detail/index',
     'pages/schedule/index',
-    // 'pages/web/index',
+    'pages/web/index',
   ],
   window: {
     backgroundTextStyle: 'light',
